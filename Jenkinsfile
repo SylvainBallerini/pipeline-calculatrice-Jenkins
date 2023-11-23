@@ -1,8 +1,4 @@
 pipeline {
-    agent {
-        label 'contôleur'
-    }
-
     stages {
         stage('Build') {
             steps {
