@@ -1,14 +1,16 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.8-alpine3.16'
-        }
+    agent none
+    environment {
+        registryCredential = 'docker-hub-credential-id'
     }
     stages {
         stage('Build') {
             steps {
-                sh 'python3.8 -m py_compile sources/prog.py sources/calc.py'
-                stash(name: 'compiled-results', includes: 'sources/*.py*')
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                        def customImage = docker.build("my-custom-image")
+                    }
+                }
             }
         }
     }
